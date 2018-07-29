@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper } from 'google-maps-react';
+import Marker from './Markers.js';
 
 class MapContainer extends Component {
 
@@ -17,7 +18,11 @@ class MapContainer extends Component {
             lat: 50.06465,
             lng: 19.94498
           }}
-         />
+         >
+         <Marker
+          place={ place }
+           />
+        </Map>
       </div>
     )
   }
