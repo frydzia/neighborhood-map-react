@@ -6,10 +6,22 @@ import React, { Component } from 'react';
 
 class Marker extends Component {
   state = {
-    position: this.props.places.place
+    position: ''
+
+  }
+
+  getPlace = () => { this.props.places.map((place) => (
+    this.setState({ position: place })
+  )
+
+  )
+
   }
   render() {
+    this.getPlace()
+    
     return (
+
       <Marker
           position={ this.state.position }
       >

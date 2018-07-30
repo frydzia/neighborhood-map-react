@@ -16,10 +16,16 @@ class App extends Component {
     ]
   }
 
+  // var position = {this.state.places.map(place) => (
+  //   position={place.location}
+  // );
+
   render() {
     return (
       <div className="App">
-        <MapContainer />
+        <div className="menu"></div>
+        <h1 className="heading">Places for booklovers</h1>
+        <MapContainer/>
       </div>
     );
   }
