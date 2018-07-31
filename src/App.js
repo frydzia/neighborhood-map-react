@@ -4,7 +4,7 @@ import './App.css';
 
 
 class App extends Component {
-  
+
 
   // var position = {this.state.places.map(place) => (
   //   position={place.location}
@@ -13,8 +13,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="menu"></div>
-        <h1 className="heading">Places for booklovers</h1>
+        <div className="heading">
+          <h1>Places for booklovers</h1>
+        </div>  
         <MapContainer/>
       </div>
     );
