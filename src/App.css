@@ -1,5 +1,11 @@
+body {
+  width: 100%;
+}
+
+
 .App {
   text-align: center;
+  width: 100%;
 }
 
 .heading {
@@ -7,6 +13,7 @@
   height: 80px;
   padding: 20px;
   color: white;
+  width: 100%;
 }
 
 .h1 {
@@ -29,8 +36,6 @@
 .map {
   width: 80%;
   height: 100%;
-  /* position: fixed;
-  top: 80px; */
 }
 
 @keyframes App-logo-spin {

@@ -4,18 +4,12 @@ import './App.css';
 
 
 class App extends Component {
-
-
-  // var position = {this.state.places.map(place) => (
-  //   position={place.location}
-  // );
-
   render() {
     return (
       <div className="App">
         <div className="heading">
           <h1>Places for booklovers</h1>
-        </div>  
+        </div>
         <MapContainer/>
       </div>
     );

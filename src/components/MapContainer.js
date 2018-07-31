@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 //import Marker from './Markers.js';
 
 class MapContainer extends Component {
@@ -13,7 +13,10 @@ class MapContainer extends Component {
       {title: 'Główna Księgarnia Naukowa', location: {lat: 50.063037, lng: 19.932079}},
       {title: 'Skład Tanich Książek', location: {lat:  50.0575, lng: 19.938381}}
     ],
-    bounds: {}
+    bounds: {},
+    showInfoWindow: false,
+    activeMarker: {},
+    clickedPlace: {}
   }
 
   setBounds = () => {
@@ -24,47 +27,55 @@ class MapContainer extends Component {
 
     this.setState({bounds})
   }
-  //   for (let i = 0; i < this.state.places.length; i++) {
-  //     bounds.extend(this.state.places[i].location);
-  //   }
-  //   this.refs.map.fitBounds(bounds)
-  // }
 
   componentDidMount(){
     this.setBounds();
   }
 
+  onMarkerClick = (placeProps, marker, e) => {
+    this.setState({
+      clickedPlace: placeProps,
+      activeMarker: marker,
+      showInfoWindow: true
+    })
+  }
+
   render() {
     return (
-      <div>
-        <div className="container">
-          <div className="sidebarMenu">
-          Menue
-          </div>
-          <div role="application" className="map" ref="map">
-            <Map
-              google={this.props.google}
-              style={{
-                width: '100%',
-                height: '100%'
-              }}
-              zoom={14}
-              initialCenter={{
-                lat: 50.06465,
-                lng: 19.94498
-              }}
-              bounds={this.state.bounds}
-          //    ref={(ref) => { this.map = ref; }}
-             >
-              {this.state.places.map((place, index) =>
-                <Marker
-                  position = {place.location}
-                  key = {index}
-                  title = {place.title}
-                />
-              )}
-            </Map>
-          </div>
+      <div className="container">
+        <div className="sidebarMenu">
+        Menue
+        </div>
+        <div role="application" className="map" ref="map">
+          <Map
+            google={this.props.google}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+            zoom={14}
+            initialCenter={{
+              lat: 50.06465,
+              lng: 19.94498
+            }}
+            bounds={this.state.bounds}
+           >
+            {this.state.places.map((place, index) =>
+              <Marker
+                position = {place.location}
+                key = {index}
+                title = {place.title}
+                onClick = { this.onMarkerClick }
+              />
+            )}
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showInfoWindow}>
+                <div>
+                  <h1>{this.state.clickedPlace.title}</h1>
+                </div>
+            </InfoWindow>
+          </Map>
         </div>
       </div>
     )
