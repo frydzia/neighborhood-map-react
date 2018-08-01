@@ -53,7 +53,7 @@ class MapContainer extends Component {
               width: '100%',
               height: '100%'
             }}
-            zoom={14}
+            zoom={15}
             initialCenter={{
               lat: 50.06465,
               lng: 19.94498
