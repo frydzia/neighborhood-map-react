@@ -5,10 +5,7 @@ const limit = 1; //The max number of venues to load
 //const query = ''; //The type of venues we want to query
 const v = '20180801'; //The version of the API.
 //const ll = ''; //The latitude and longitude of Charing Cross, London
-const headers = {
-  'Accept': 'application/json'
-//  'Authorization': token
-}
+const headers = {'Accept': 'application/json'}
 
 
 export const getVenue = (lat, lng, name) =>
@@ -22,4 +19,4 @@ export const getVenue = (lat, lng, name) =>
 export const getDetailInfo = (id) =>
 	fetch(`${api}/venues/${id}?&client_id=${client_id}&client_secret=${client_secret}&v=${v}`)
   		.then(response => response.json())
-  		.catch('error')
+  		.then(response=>response.response.venue)

@@ -18,23 +18,24 @@ class MapContainer extends Component {
     showInfoWindow: false,
     activeMarker: {},
     clickedPlace: {},
-    foursquareError: false,
     address: '',
     description: '',
+    rating: '',
+    phone: '',
     photo: ''
   }
 
   setBounds = () => {
     let bounds = new this.props.google.maps.LatLngBounds();
     for (let i = 0; i < this.state.places.length; i++) {
-      bounds.extend(this.state.places[i].location);
+      bounds.extend(this.state.places[i].location)
     }
 
     this.setState({bounds})
   }
 
   componentDidMount(){
-    this.setBounds();
+    this.setBounds()
   }
 
   onMarkerClick = (placeProps, marker, e) => {
@@ -51,63 +52,53 @@ class MapContainer extends Component {
     FoursquareAPI.getVenue(lat, lng, name).then((response) => {
       if (response === 'error') {
         console.log('response error')
+        alert('Sorry, we could not load the content')
       } else {
-        console.log(response)
 
+        let venueID = response[0].id;
+//        console.log(response)
+        FoursquareAPI.getDetailInfo(venueID).then((response) => {
+          console.log(response)
 
+          if(response.rating) {
+            this.setState({rating: response.rating});
+          } else {
+            this.setState({rating: 'no rating'});
+          }
 
-        // let venue = response.response.venues;
-        //
-        // if('bestPhoto' in venue)
-        //  this.setState({photo: venue.bestPhoto.prefix+'150'+ venue.bestPhoto.suffix});
-        // else
-        //   this.setState({photo:'error'});
-        //
-        // if('description' in response.response.venues)
-        //  this.setState({description: response.response.venues.description});
-        // else
-        //   console.log('descr error')
-        //   this.setState({description:'error'});
-        //
-        if('address' in response)
-         this.setState({address: response[0].location.address});
-        else
-          this.setState({address:'error'});
+          if(response.bestPhoto) {
+            this.setState({photo: response.bestPhoto.prefix+'width150'+response.bestPhoto.suffix});
+          } else {
+            this.setState({photo: ''});
+          }
 
+          if(response.location.address) {
+            this.setState({address: response.location.address});
+          } else {
+            this.setState({address:'no address'});
+          }
+
+          if(response.desciption) {
+            this.setState({desciption: response.desciption});
+          } else {
+            this.setState({desciption: ''});
+          }
+
+          if(response.contact.formattedPhone) {
+            this.setState({phone: response.contact.formattedPhone});
+          } else {
+            this.setState({phone: 'no phone number'});
+          }
+
+        }).catch(() => {
+          console.log('foursquareDetailError')
+        })
       }
 
     }).catch(() => {
-      console.log('foursquareError');
-      this.setState({
-          foursquareError: true
-      })
+      console.log('foursquareError')
+      alert('Sorry, we could not load the content')
     })
-
-    // return FoursquareAPI.getVenue(lat, lng, title).then(venueId => {
-    //   if (venueId === 'error') {
-    //     this.setState({
-    //       address: 'error',
-    //       description: 'error',
-    //       photo: 'error'
-    //     })
-    //   } else {
-    //     FoursquareAPI.getDetailInfo(venueId).then(response => {
-    //       if (response === 'error') {
-    //         this.setState({
-    //           address: 'error',
-    //           description: 'error',
-    //           photo: 'error'
-    //         })
-    //       } else {
-    //         this.setState({
-    //           address: response.response.venue.location,
-    //           description: response.response.venue,
-    //           photo: response.response.venue.bestPhoto.prefix+'150'+response.response.venue.bestPhoto.suffix
-    //         })
-    //       }
-    //     })
-    //   }
-    // })
   }
 
   render() {
@@ -141,9 +132,13 @@ class MapContainer extends Component {
             <InfoWindow
               marker={this.state.activeMarker}
               visible={this.state.showInfoWindow}>
-                <div>
-                  <h1>{this.state.clickedPlace.title}</h1>
-                  <p> {this.state.address}</p>
+                <div className="info-window">
+                  <h2>{this.state.clickedPlace.title}</h2>
+                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.activeMarker.title + ' photo'}/>
+                  <p>Address: {this.state.address}</p>
+                  <p>Contact: {this.state.phone}</p>
+                  <p>{this.state.description}</p>
+                  <p>Rating: {this.state.rating}</p>
                 </div>
             </InfoWindow>
           </Map>
