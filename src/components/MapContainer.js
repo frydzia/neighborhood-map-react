@@ -26,6 +26,7 @@ class MapContainer extends Component {
     photo: ''
   }
 
+  // set the map boundaries according to the location of the places
   setBounds = () => {
     let bounds = new this.props.google.maps.LatLngBounds();
     for (let i = 0; i < this.state.places.length; i++) {
@@ -39,69 +40,78 @@ class MapContainer extends Component {
     this.setBounds()
   }
 
+  // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
     this.setState({
       clickedPlace: placeProps,
       activeMarker: marker,
       showInfoWindow: true
     })
-//    console.log(placeProps)
-    this.getInfowindowDetailInfo(placeProps.position.lat, placeProps.position.lng, placeProps.title)
+
+    // open infowindow when marker is clicked with information about clicked place
+    this.openInfowindow(placeProps.position.lat, placeProps.position.lng, placeProps.title)
   }
 
-  getInfowindowDetailInfo = (lat, lng, name) => {
+  openInfowindow = (lat, lng, name) => {
+    // get data about the place from foursquare API
     FoursquareAPI.getVenue(lat, lng, name).then((response) => {
-      if (response === 'error') {
+      if (response === 'error') {  // handle errors
         console.log('response error')
         alert('Sorry, we could not load the content')
       } else {
-
+        // store the space id - it is needed to get detailed information form foursquare API
         let venueID = response[0].id;
-//        console.log(response)
-        FoursquareAPI.getDetailInfo(venueID).then((response) => {
-          console.log(response)
 
+        // get detailsed data about the place from foursquare API
+        FoursquareAPI.getDetailInfo(venueID).then((response) => {
+
+          // set the rating if available
           if(response.rating) {
             this.setState({rating: response.rating});
           } else {
             this.setState({rating: 'no rating'});
           }
 
+          // set the photo if available
           if(response.bestPhoto) {
             this.setState({photo: response.bestPhoto.prefix+'width150'+response.bestPhoto.suffix});
           } else {
             this.setState({photo: ''});
           }
 
+          // set the address if available
           if(response.location.address) {
             this.setState({address: response.location.address});
           } else {
             this.setState({address:'no address'});
           }
 
+          // set the description if available
           if(response.desciption) {
             this.setState({desciption: response.desciption});
           } else {
             this.setState({desciption: ''});
           }
 
+          // set the phone number if available
           if(response.contact.formattedPhone) {
             this.setState({phone: response.contact.formattedPhone});
           } else {
             this.setState({phone: 'no phone number'});
           }
 
-        }).catch(() => {
+        }).catch(() => { // handle errors
           console.log('foursquareDetailError')
         })
       }
 
-    }).catch(() => {
+    }).catch(() => { // handle errors
       console.log('foursquareError')
       alert('Sorry, we could not load the content')
     })
   }
 
+  // return content
   render() {
     return (
       <div className="container">
