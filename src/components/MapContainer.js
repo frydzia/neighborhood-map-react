@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
+import Sidebar from './Sidebar.js';
 
 
 class MapContainer extends Component {
@@ -115,9 +116,9 @@ class MapContainer extends Component {
   render() {
     return (
       <div className="container">
-        <div className="sidebarMenu">
-        Menue
-        </div>
+        <Sidebar
+          listOfPlaces = {this.state.places}
+        />
         <div role="application" className="map" ref="map">
           <Map
             google={this.props.google}
