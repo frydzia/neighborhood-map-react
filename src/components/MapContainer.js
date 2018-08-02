@@ -6,7 +6,7 @@ import * as FoursquareAPI from './FoursquareAPI.js';
 class MapContainer extends Component {
   state = {
     places: [
-      {title: 'Massolit Books & Cafe', location: {lat: 50.058312, lng: 19.92972}},
+      {title: 'Massolit Books & Café', location: {lat: 50.058312, lng: 19.92972}},
       {title: 'Bona Książka i Kawa', location: {lat: 50.056684, lng: 19.937394}},
       {title: 'Lokator Coffee & Books', location: {lat: 50.048117, lng: 19.9454}},
       {title: 'De Revolutionibus Books & Cafe', location: {lat: 50.059598, lng: 19.936324}},
@@ -18,6 +18,7 @@ class MapContainer extends Component {
     showInfoWindow: false,
     activeMarker: {},
     clickedPlace: {},
+    foursquareError: false,
     address: '',
     description: '',
     photo: ''
@@ -42,35 +43,71 @@ class MapContainer extends Component {
       activeMarker: marker,
       showInfoWindow: true
     })
-    this.getInfowindowDetailInfo(placeProps.lat, placeProps.lng, placeProps.title)
+//    console.log(placeProps)
+    this.getInfowindowDetailInfo(placeProps.position.lat, placeProps.position.lng, placeProps.title)
   }
 
-  getInfowindowDetailInfo = (lat, lng, title) => {
-    return FoursquareAPI.getSearchResult(lat, lng, title).then(venueId => {
-      if (venueId === 'error') {
-        this.setState({
-          address: 'error',
-          description: 'error',
-          photo: 'error'
-        })
+  getInfowindowDetailInfo = (lat, lng, name) => {
+    FoursquareAPI.getVenue(lat, lng, name).then((response) => {
+      if (response === 'error') {
+        console.log('response error')
       } else {
-        FoursquareAPI.getDetailInfo(venueId).then(response => {
-          if (response === 'error') {
-            this.setState({
-              address: 'error',
-              description: 'error',
-              photo: 'error'
-            })
-          } else {
-            this.setState({
-              address: response.response.venue.location,
-              description: response.response.venue,
-              photo: response.response.venue.bestPhoto.prefix+'150'+response.response.venue.bestPhoto.suffix
-            })
-          }
-        })
+        console.log(response)
+
+
+
+        // let venue = response.response.venues;
+        //
+        // if('bestPhoto' in venue)
+        //  this.setState({photo: venue.bestPhoto.prefix+'150'+ venue.bestPhoto.suffix});
+        // else
+        //   this.setState({photo:'error'});
+        //
+        // if('description' in response.response.venues)
+        //  this.setState({description: response.response.venues.description});
+        // else
+        //   console.log('descr error')
+        //   this.setState({description:'error'});
+        //
+        if('address' in response)
+         this.setState({address: response[0].location.address});
+        else
+          this.setState({address:'error'});
+
       }
+
+    }).catch(() => {
+      console.log('foursquareError');
+      this.setState({
+          foursquareError: true
+      })
     })
+
+    // return FoursquareAPI.getVenue(lat, lng, title).then(venueId => {
+    //   if (venueId === 'error') {
+    //     this.setState({
+    //       address: 'error',
+    //       description: 'error',
+    //       photo: 'error'
+    //     })
+    //   } else {
+    //     FoursquareAPI.getDetailInfo(venueId).then(response => {
+    //       if (response === 'error') {
+    //         this.setState({
+    //           address: 'error',
+    //           description: 'error',
+    //           photo: 'error'
+    //         })
+    //       } else {
+    //         this.setState({
+    //           address: response.response.venue.location,
+    //           description: response.response.venue,
+    //           photo: response.response.venue.bestPhoto.prefix+'150'+response.response.venue.bestPhoto.suffix
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
   }
 
   render() {
@@ -106,7 +143,7 @@ class MapContainer extends Component {
               visible={this.state.showInfoWindow}>
                 <div>
                   <h1>{this.state.clickedPlace.title}</h1>
-                  <p>{this.state.description}</p>
+                  <p> {this.state.address}</p>
                 </div>
             </InfoWindow>
           </Map>
