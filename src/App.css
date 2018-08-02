@@ -44,6 +44,10 @@ h1 {
   margin-left: 20%;
 }
 
+.gm-style .gm-style-iw {
+  font-family: 'Roboto', sans-serif;
+}
+
 .info-window p {
   text-align: left;
 }
