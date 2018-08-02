@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-//import Marker from './Markers.js';
+import * as FoursquareAPI from './FoursquareAPI.js';
+
 
 class MapContainer extends Component {
   state = {
@@ -16,7 +17,10 @@ class MapContainer extends Component {
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
-    clickedPlace: {}
+    clickedPlace: {},
+    address: '',
+    description: '',
+    photo: ''
   }
 
   setBounds = () => {
@@ -37,6 +41,35 @@ class MapContainer extends Component {
       clickedPlace: placeProps,
       activeMarker: marker,
       showInfoWindow: true
+    })
+    this.getInfowindowDetailInfo(placeProps.lat, placeProps.lng, placeProps.title)
+  }
+
+  getInfowindowDetailInfo = (lat, lng, title) => {
+    return FoursquareAPI.getSearchResult(lat, lng, title).then(venueId => {
+      if (venueId === 'error') {
+        this.setState({
+          address: 'error',
+          description: 'error',
+          photo: 'error'
+        })
+      } else {
+        FoursquareAPI.getDetailInfo(venueId).then(response => {
+          if (response === 'error') {
+            this.setState({
+              address: 'error',
+              description: 'error',
+              photo: 'error'
+            })
+          } else {
+            this.setState({
+              address: response.response.venue.location,
+              description: response.response.venue,
+              photo: response.response.venue.bestPhoto.prefix+'150'+response.response.venue.bestPhoto.suffix
+            })
+          }
+        })
+      }
     })
   }
 
@@ -73,6 +106,7 @@ class MapContainer extends Component {
               visible={this.state.showInfoWindow}>
                 <div>
                   <h1>{this.state.clickedPlace.title}</h1>
+                  <p>{this.state.description}</p>
                 </div>
             </InfoWindow>
           </Map>
