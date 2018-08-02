@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import * as FoursquareAPI from './FoursquareAPI.js';
+import logo from '../powered-by-foursquare-grey.png';
 
 
 class MapContainer extends Component {
@@ -139,6 +140,7 @@ class MapContainer extends Component {
                   <p>Contact: {this.state.phone}</p>
                   <p>{this.state.description}</p>
                   <p>Rating: {this.state.rating}</p>
+                  <img className="logo" src={logo} alt="Foursquare logo"/>
                 </div>
             </InfoWindow>
           </Map>
