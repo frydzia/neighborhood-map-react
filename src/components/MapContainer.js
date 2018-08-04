@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+// import PropTypes from 'prop-types';
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
 import Sidebar from './Sidebar.js';
@@ -117,7 +118,7 @@ class MapContainer extends Component {
     return (
       <div className="container">
         <Sidebar
-          listOfPlaces = {this.state.places}
+          defaultListOfPlaces={this.state.places}
         />
         <div role="application" className="map" ref="map">
           <Map
@@ -161,6 +162,12 @@ class MapContainer extends Component {
   }
 }
 
+// MapContainer.propTypes = {
+//   activeMarkers: PropTypes.array.isRequired,
+//   clickedPlace: PropTypes.array.isRequired,
+//   getVenue: PropTypes.func.isRequired
+// }
+
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyDRok6s3pa6glNailpa7Fb-1GGuPJgc0p4')
+  apiKey: ('AIzaSyAHzXNyo0NQsCWdHYLGpzBwwYayU2beOMs')
 })(MapContainer)
