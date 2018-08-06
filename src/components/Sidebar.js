@@ -20,18 +20,13 @@ class Sidebar extends Component {
   }
 
   openInfowindowAfterClickingSidebar = (place) => {
+      this.props.setVisiblePlaces(place)
 
-
-    // this.props.setActiveMarkerForSelectedPlace(place)
-    // this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
+     this.props.setActiveMarkerForSelectedPlace(place)
+     this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
   }
 
-  // searchMarker = () => {
-  //   let markers = document.getElementsByClassName('gmnoprint');
-  //   let markersArray = Array.prototype.slice.call(markers);
-  //
-  //   console.log(markersArray)
-  // }
+
 
 //props.openInfowindow(place.location.lat, place.location.lng, place.title)
   // onPlaceFromListClick = (placeProps) => {
@@ -60,7 +55,7 @@ class Sidebar extends Component {
   					key={index}
             onClick={() => {
               this.setState({ selectedPlace: place})
-              this.props.setVisiblePlaces(place)
+              this.openInfowindowAfterClickingSidebar(place)
               }
             }
           >

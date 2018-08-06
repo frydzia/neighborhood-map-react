@@ -18,10 +18,11 @@ class MapContainer extends Component {
       {title: 'Skład Tanich Książek', location: {lat:  50.0575, lng: 19.938381}}
     ],
     visiblePlaces: [], // list of places for which markers are displayed
+    markerObjects: [],
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
-//    clickedPlace: {},
+    clickedPlace: {},
     address: '',
     description: '',
     rating: '',
@@ -49,6 +50,7 @@ class MapContainer extends Component {
   componentDidMount(){
     this.setBounds()
     this.setDefaultVisiblePlaces()
+    console.log('hello')
   }
 
   // set visible places after changing (clicking on sidebar list or search)
@@ -56,13 +58,20 @@ class MapContainer extends Component {
     this.setState({
       visiblePlaces: [sidebarPlace]
     })
-    console.log(this.state.visiblePlaces)
+//    console.log(this.state.visiblePlaces)
   }
+
+  // getVisibleMarkers = (element) => {
+  //   this.setState((prevState) => ({
+  //     markerObjects: [...prevState.markerObjects, element.marker]
+  //   }))
+  //   console.log(this.state.markerObjects)
+  // }
 
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
     this.setState({
-//      clickedPlace: placeProps,
+      clickedPlace: placeProps,
       activeMarker: marker,
       showInfoWindow: true
     })
@@ -77,21 +86,19 @@ class MapContainer extends Component {
         showInfoWindow: false,
         visiblePlaces: this.state.places,
         activeMarker: {},
-//        clickedPlace: {}
+        clickedPlace: {}
       })
   }
 
-  // setActiveMarkerForSelectedPlace = (selectedPlace) => {
-  //   // let selPlace = this.props.selectedPlace
-  //
-  //   if (this.props.selectedPlace !== '') {
-  //     this.setState({
-  //       activeMarker: selectedPlace.marker,
-  //       clickedPlace: selectedPlace,
-  //       showInfoWindow: true
-  //     })
-  //   }
-  // }
+  setActiveMarkerForSelectedPlace = (selectedPlace) => {
+    if (this.props.selectedPlace !== '') {
+      this.setState({
+        activeMarker: this.refs.marker,
+        clickedPlace: selectedPlace,
+        showInfoWindow: true
+      })
+    }
+  }
 
   openInfowindow = (lat, lng, name) => {
     // get data about the place from foursquare API
@@ -105,7 +112,7 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-//        console.log(this.state.clickedPlace)
+        console.log(this.state.clickedPlace)
         console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
@@ -182,7 +189,7 @@ class MapContainer extends Component {
            >
             {this.state.visiblePlaces.map((place, index) =>
               <Marker
-                ref={this.onMarkerMounted}
+                ref={place.title}
                 options={{id: index}}
                 position = {place.location}
                 key = {index}
@@ -195,8 +202,8 @@ class MapContainer extends Component {
               visible={this.state.showInfoWindow}
               onClose={this.closeInfowindow}>
                 <div className="info-window">
-                  <h2>{this.state.activeMarker.title}</h2>
-                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.activeMarker.title + ' photo'}/>
+                  <h2>{this.state.clickedPlace.title}</h2>
+                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.clickedPlace.title + ' photo'}/>
                   <p>Address: {this.state.address}</p>
                   <p>Contact: {this.state.phone}</p>
                   <p>{this.state.description}</p>
