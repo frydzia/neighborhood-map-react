@@ -18,7 +18,7 @@ class MapContainer extends Component {
       {title: 'Skład Tanich Książek', location: {lat:  50.0575, lng: 19.938381}}
     ],
     visiblePlaces: [], // list of places for which markers are displayed
-    markerObjects: [],
+    markerInstances: [],
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
@@ -61,12 +61,17 @@ class MapContainer extends Component {
 //    console.log(this.state.visiblePlaces)
   }
 
-  // getVisibleMarkers = (element) => {
-  //   this.setState((prevState) => ({
-  //     markerObjects: [...prevState.markerObjects, element.marker]
-  //   }))
-  //   console.log(this.state.markerObjects)
-  // }
+  // save marker into markerObjects array
+  registerMarker = (element) => {
+    console.log(element);
+    if (element != null){
+      this.setState((prevState) => ({
+        markerInstances: [...prevState.markerInstances, element.marker]
+      }))
+    }
+      console.log(this.state.markerInstances)
+
+  }
 
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
@@ -93,7 +98,7 @@ class MapContainer extends Component {
   setActiveMarkerForSelectedPlace = (selectedPlace) => {
     if (this.props.selectedPlace !== '') {
       this.setState({
-        activeMarker: this.refs.marker,
+        activeMarker: selectedPlace.marker,
         clickedPlace: selectedPlace,
         showInfoWindow: true
       })
@@ -189,7 +194,7 @@ class MapContainer extends Component {
            >
             {this.state.visiblePlaces.map((place, index) =>
               <Marker
-                ref={place.title}
+                ref={this.registerMarker} // assign ref attribute to store reference to marker
                 options={{id: index}}
                 position = {place.location}
                 key = {index}
