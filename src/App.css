@@ -37,6 +37,10 @@ h1 {
 
 }
 
+.placeFromList p {
+  cursor: pointer;
+}
+
 .map {
   width: 80%;
   height: 100%;

@@ -17,6 +17,8 @@ class MapContainer extends Component {
       {title: 'Główna Księgarnia Naukowa', location: {lat: 50.063037, lng: 19.932079}},
       {title: 'Skład Tanich Książek', location: {lat:  50.0575, lng: 19.938381}}
     ],
+//    markerObjects: [],
+    visiblePlaces: [], // list of places for which markers are displayed
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
@@ -38,9 +40,36 @@ class MapContainer extends Component {
     this.setState({bounds})
   }
 
+  // displays all location markers by default
+  setDefaultVisiblePlaces = () => {
+    this.setState({
+      visiblePlaces: this.state.places
+    })
+  }
+
   componentDidMount(){
     this.setBounds()
+    this.setDefaultVisiblePlaces()
   }
+
+  // set visible places after changing (clicking on sidebar list or search)
+  setVisiblePlaces = (sidebarPlace) => {
+    this.setState({
+      visiblePlaces: [sidebarPlace]
+    })
+    console.log(this.state.visiblePlaces)
+  }
+
+  componentWillReceiveProps(){
+    this.setVisiblePlaces()
+  }
+
+  // onMarkerMounted = (element) => {
+  //   this.setState((prevState) => ({
+  //     markerObjects: [...prevState.markerObjects, element.marker]
+  //   }))
+  //   console.log(this.state.markerObjects)
+  // }
 
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
@@ -54,6 +83,29 @@ class MapContainer extends Component {
     this.openInfowindow(placeProps.position.lat, placeProps.position.lng, placeProps.title)
   }
 
+  // close infowindow when map is clicked
+  // onMapClicked = (props) => {
+  //   if (this.state.showInfoWindow) {
+  //     this.setState({
+  //       showingInfoWindow: false,
+  //       activeMarker: {},
+  //       clickedPlace: {}
+  //     })
+  //   }
+  // }
+
+  // setActiveMarkerForSelectedPlace = (selectedPlace) => {
+  //   // let selPlace = this.props.selectedPlace
+  //
+  //   if (this.props.selectedPlace !== '') {
+  //     this.setState({
+  //       activeMarker: selectedPlace.marker,
+  //       clickedPlace: selectedPlace,
+  //       showInfoWindow: true
+  //     })
+  //   }
+  // }
+
   openInfowindow = (lat, lng, name) => {
     // get data about the place from foursquare API
     FoursquareAPI.getVenue(lat, lng, name).then((response) => {
@@ -66,7 +118,8 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-
+        console.log(this.state.clickedPlace)
+        console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
             this.setState({rating: response.rating});
@@ -113,14 +166,18 @@ class MapContainer extends Component {
     })
   }
 
+
   // return content
   render() {
     return (
       <div className="container">
         <Sidebar
           defaultListOfPlaces={this.state.places}
+          openInfowindow={this.openInfowindow}
+          setActiveMarkerForSelectedPlace={this.setActiveMarkerForSelectedPlace}
+          setVisiblePlaces={this.setVisiblePlaces}
         />
-        <div role="application" className="map" ref="map">
+        <div role="application" className="map" >
           <Map
             google={this.props.google}
             style={{
@@ -133,9 +190,13 @@ class MapContainer extends Component {
               lng: 19.94498
             }}
             bounds={this.state.bounds}
+            ref={'map'}
+            // onClick={this.onMapClicked}
            >
-            {this.state.places.map((place, index) =>
+            {this.state.visiblePlaces.map((place, index) =>
               <Marker
+                ref={this.onMarkerMounted}
+                options={{id: index}}
                 position = {place.location}
                 key = {index}
                 title = {place.title}
@@ -144,10 +205,11 @@ class MapContainer extends Component {
             )}
             <InfoWindow
               marker={this.state.activeMarker}
-              visible={this.state.showInfoWindow}>
+              visible={this.state.showInfoWindow}
+              onClose={() => this.setState({activeMarker: {}, showInfoWindow: false})}>
                 <div className="info-window">
                   <h2>{this.state.clickedPlace.title}</h2>
-                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.activeMarker.title + ' photo'}/>
+                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.clickedPlace.title + ' photo'}/>
                   <p>Address: {this.state.address}</p>
                   <p>Contact: {this.state.phone}</p>
                   <p>{this.state.description}</p>

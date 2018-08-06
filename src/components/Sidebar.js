@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 
 class Sidebar extends Component {
   state = {
-    listOfPlaces: []
+    listOfPlaces: [],
+    selectedPlace: {},
+//    sidebarPlace: {}
   }
 
   setListOfPlaces = () => {
     this.setState({
-      listOfPlaces: this.props.defaultListOfPlaces
+      listOfPlaces: this.props.defaultListOfPlaces,
     })
   }
 
@@ -17,6 +19,32 @@ class Sidebar extends Component {
     this.setListOfPlaces()
   }
 
+  openInfowindowAfterClickingSidebar = (place) => {
+
+
+    // this.props.setActiveMarkerForSelectedPlace(place)
+    // this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
+  }
+
+  // searchMarker = () => {
+  //   let markers = document.getElementsByClassName('gmnoprint');
+  //   let markersArray = Array.prototype.slice.call(markers);
+  //
+  //   console.log(markersArray)
+  // }
+
+//props.openInfowindow(place.location.lat, place.location.lng, place.title)
+  // onPlaceFromListClick = (placeProps) => {
+  //   this.setState({
+  //     clickedPlace: placeProps
+  //   })
+  //   alert(placeProps.title)
+  // }
+
+
+// this.searchMarker()
+  // this.props.setActiveMarkerForSelectedPlace()
+  // this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
   render() {
     return (
       <div className="sidebarMenu">
@@ -30,8 +58,13 @@ class Sidebar extends Component {
             className="placeFromList"
             tabIndex={this.state.listOfPlaces+index}
   					key={index}
+            onClick={() => {
+              this.setState({ selectedPlace: place})
+              this.props.setVisiblePlaces(place)
+              }
+            }
           >
-          {place.title}
+          <p>{place.title}</p>
           <hr />
           </div>
         ))}
