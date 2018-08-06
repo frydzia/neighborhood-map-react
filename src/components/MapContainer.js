@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { InfoWindow, Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { InfoWindow, Map as MyMap, Marker, GoogleApiWrapper } from 'google-maps-react';
 // import PropTypes from 'prop-types';
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
@@ -18,7 +18,7 @@ class MapContainer extends Component {
       {title: 'Skład Tanich Książek', location: {lat:  50.0575, lng: 19.938381}}
     ],
     visiblePlaces: [], // list of places for which markers are displayed
-    markerInstances: [],
+    markerObjects: new Map(),
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
@@ -65,11 +65,9 @@ class MapContainer extends Component {
   registerMarker = (element) => {
     console.log(element);
     if (element != null){
-      this.setState((prevState) => ({
-        markerInstances: [...prevState.markerInstances, element.marker]
-      }))
+    this.state.markerObjects.set(element.marker.title, element.marker)
     }
-      console.log(this.state.markerInstances)
+      console.log(this.state.markerObjects)
 
   }
 
@@ -177,7 +175,7 @@ class MapContainer extends Component {
           setVisiblePlaces={this.setVisiblePlaces}
         />
         <div role="application" className="map" >
-          <Map
+          <MyMap
             google={this.props.google}
             style={{
               width: '100%',
@@ -216,7 +214,7 @@ class MapContainer extends Component {
                   <img className="logo" src={logo} alt="Foursquare logo"/>
                 </div>
             </InfoWindow>
-          </Map>
+          </MyMap>
         </div>
       </div>
     )
