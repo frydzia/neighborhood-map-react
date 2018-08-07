@@ -170,9 +170,6 @@ class MapContainer extends Component {
     })
   }
 
-  setFocus = () => {
-    this.refs.focus()
-  }
 
   // return content
   render() {
@@ -185,7 +182,7 @@ class MapContainer extends Component {
           setActiveMarkerForSelectedPlace={this.setActiveMarkerForSelectedPlace}
           setVisiblePlaces={this.setVisiblePlaces}
         />
-        <div role="application" className="map" >
+        <div role="application" id="map" >
           <MyMap
             google={this.props.google}
             style={{
@@ -218,12 +215,8 @@ class MapContainer extends Component {
               onClose={this.closeInfowindow}
             >
                 <div
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby="dialog1-label"
                   className="info-window"
                   aria-label={`InfoWindow on ${this.state.activeMarker.title}`}
-                  tabIndex="-1"
                 >
                   <h2 tabIndex="0">{this.state.activeMarker.title}</h2>
                   <img tabIndex="0" src={this.state.photo} alt={this.state.activeMarker.title + ' photo'}/>

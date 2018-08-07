@@ -3,7 +3,6 @@
 body {
   width: 100%;
   font-family: 'Merienda', cursive;
-
 }
 
 .App {
@@ -31,21 +30,20 @@ h1 {
 }
 
 .sidebarMenu {
-  width: 20%;
+  width: 28%;
   height: 100%;
   color: green;
-
 }
 
 .placeFromList p {
   cursor: pointer;
 }
 
-.map {
-  width: 80%;
+#map {
+  width: 72%;
   height: 100%;
   position: absolute;
-  margin-left: 20%;
+  margin-left: 28%;
 }
 
 .gm-style .gm-style-iw {
@@ -59,4 +57,29 @@ h1 {
 .logo {
   height: 10px;
   float: right;
+}
+
+@media screen and (max-width: 550px) {
+
+ .heading {
+   height: 10%;
+   padding: 2px 0;
+   order: -1;
+ }
+
+  .sidebarMenu {
+    width: 100%;
+    height: auto;
+    order: 1;
+    position: relative;
+    top: 260px;
+  }
+
+  #map {
+    width: 100%;
+    height: 45%;
+
+    order: 0;
+    margin: 0;
+  }
 }
