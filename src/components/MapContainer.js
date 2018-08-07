@@ -50,7 +50,6 @@ class MapContainer extends Component {
   componentDidMount(){
     this.setBounds()
     this.setDefaultVisiblePlaces()
-    console.log('hello')
   }
 
   // set visible places after changing (clicking on sidebar list or search)
@@ -58,7 +57,7 @@ class MapContainer extends Component {
     this.setState({
       visiblePlaces: [sidebarPlace]
     })
-//    console.log(this.state.visiblePlaces)
+    console.log(this.state.visiblePlaces)
   }
 
   // save marker into markerObjects map object
