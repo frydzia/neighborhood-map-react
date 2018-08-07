@@ -7,8 +7,8 @@ class Sidebar extends Component {
   state = {
     listOfPlaces: [],
     searchResult: '',
-    query: ''
-//    selectedPlace: {}
+    query: '',
+    selectedPlace: []
   }
 
   setListOfPlaces = () => {
@@ -22,8 +22,10 @@ class Sidebar extends Component {
   }
 
   openInfowindowAfterClickingSidebar = (place) => {
-//      this.setState({ selectedPlace: place})
-    this.props.setVisiblePlaces(place)
+
+    // this.setState({ selectedPlace: place})
+    // console.log(this.state.selectedPlace)
+//    this.props.setVisiblePlaces(place)
     this.props.setActiveMarkerForSelectedPlace(place)
     this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
   }
@@ -37,7 +39,7 @@ class Sidebar extends Component {
         this.setState({
           listOfPlaces: this.props.defaultListOfPlaces.filter(place => match.test(place.title))
         })
-//        this.props.setVisiblePlaces(this.state.listOfPlaces)
+        this.props.setVisiblePlaces(this.state.listOfPlaces)
       } else {
         this.setState({
           searchResult: true
@@ -52,6 +54,7 @@ class Sidebar extends Component {
       query: '',
       listOfPlaces: this.props.defaultListOfPlaces
     })
+    this.props.setVisiblePlaces(this.props.defaultListOfPlaces)
   }
 
 

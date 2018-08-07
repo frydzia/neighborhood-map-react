@@ -51,10 +51,10 @@ class MapContainer extends Component {
     this.setDefaultVisiblePlaces()
   }
 
-  // set visible places after changing (clicking on sidebar list or search)
+  // set visible places after typing sth in search input
   setVisiblePlaces = (sidebarPlace) => {
     this.setState({
-      visiblePlaces: [sidebarPlace]
+      visiblePlaces: sidebarPlace
     })
     console.log(this.state.visiblePlaces)
   }
@@ -112,7 +112,7 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-        console.log(this.state.activeMarker)
+//        console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
             this.setState({rating: response.rating});
