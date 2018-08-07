@@ -23,7 +23,7 @@ h1 {
   font-size: 1.5em;
 }
 
-.container {
+.mapContainer {
   width: 100%;
   display: flex;
   flex-wrap: wrap;

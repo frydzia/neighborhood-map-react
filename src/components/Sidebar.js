@@ -33,6 +33,7 @@ class Sidebar extends Component {
   updateQuery = (query) => {
     this.props.setVisiblePlaces(this.state.listOfPlaces)
     this.setState({ query: query })
+    this.props.closeInfowindow()
 
     if (query.trim()) {
       // search for places that match query
@@ -67,21 +68,27 @@ class Sidebar extends Component {
       <div className="sidebarMenu">
         <h3>Choose your favourite bookstore</h3>
         <input
-          id="search-text"
+          id="search"
           type="text"
           placeholder="Search!"
           onChange={event => this.updateQuery(event.target.value)}
 					value={this.state.query}
+          aria-label="Search bar"
+          tabIndex="0"
+          className="searchBar"
         />
+        <hr />
 
         { this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
           <div
             className="placeFromList"
-            tabIndex={this.state.listOfPlaces+index}
+            aria-label="Lst of locations"
+            role="list"
   					key={index}
             onClick={() => {this.openInfowindowAfterClickingSidebar(place)}}
+            onKeyPress={() => {this.openInfowindowAfterClickingSidebar(place)}}
           >
-          <p>{place.title}</p>
+          <p tabIndex={0} aria-label={`View details for ${place.title}`} role="listitem">{place.title}</p>
           <hr />
           </div>
         ))}
