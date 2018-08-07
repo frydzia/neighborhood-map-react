@@ -22,7 +22,7 @@ class MapContainer extends Component {
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
-    clickedPlace: {},
+//    clickedPlace: {},
     address: '',
     description: '',
     rating: '',
@@ -74,7 +74,7 @@ class MapContainer extends Component {
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
     this.setState({
-      clickedPlace: placeProps,
+//      clickedPlace: placeProps,
       activeMarker: marker,
       showInfoWindow: true
     })
@@ -89,7 +89,7 @@ class MapContainer extends Component {
       showInfoWindow: false,
       visiblePlaces: this.state.places,
       activeMarker: {},
-      clickedPlace: {}
+//      clickedPlace: {}
     })
   }
 
@@ -100,7 +100,7 @@ class MapContainer extends Component {
 //    console.log(currentMarker)
     this.setState({
       activeMarker: currentMarker,
-      clickedPlace: selectedPlace,
+//      clickedPlace: selectedPlace,
       showInfoWindow: true
     })
   }
@@ -117,7 +117,7 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-        console.log(this.state.clickedPlace)
+//        console.log(this.state.clickedPlace)
         console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
@@ -199,6 +199,7 @@ class MapContainer extends Component {
                 key = {index}
                 title = {place.title}
                 onClick = { this.onMarkerClick }
+                icon = {this.state.activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
               />
             )}
             <InfoWindow
@@ -206,8 +207,8 @@ class MapContainer extends Component {
               visible={this.state.showInfoWindow}
               onClose={this.closeInfowindow}>
                 <div className="info-window">
-                  <h2>{this.state.clickedPlace.title}</h2>
-                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.clickedPlace.title + ' photo'}/>
+                  <h2>{this.state.activeMarker.title}</h2>
+                  <img  tabIndex="0"   src={this.state.photo}   alt={this.state.activeMarker.title + ' photo'}/>
                   <p>Address: {this.state.address}</p>
                   <p>Contact: {this.state.phone}</p>
                   <p>{this.state.description}</p>
