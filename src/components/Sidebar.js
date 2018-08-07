@@ -6,7 +6,7 @@ import escapeRegExp from 'escape-string-regexp';
 class Sidebar extends Component {
   state = {
     listOfPlaces: [],
-    searchResult: '',
+    noSearchResult: '',
     query: '',
     selectedPlace: []
   }
@@ -31,27 +31,31 @@ class Sidebar extends Component {
   }
 
   updateQuery = (query) => {
+    this.props.setVisiblePlaces(this.state.listOfPlaces)
     this.setState({ query: query })
 
     if (query.trim()) {
-      if (this.state.listOfPlaces.length > 0) {
-        const match = new RegExp(escapeRegExp(query), 'i')
+      // search for places that match query
+      const match = new RegExp(escapeRegExp(query), 'i')
+      this.setState({
+        listOfPlaces: this.props.defaultListOfPlaces.filter(place => match.test(place.title))
+      })
+      // if there are no matching results, show info "No search results"
+      if (this.state.listOfPlaces.length === 0) {
         this.setState({
-          listOfPlaces: this.props.defaultListOfPlaces.filter(place => match.test(place.title))
+          noSearchResult: 'No search result'
         })
-        this.props.setVisiblePlaces(this.state.listOfPlaces)
+      }
       } else {
-        this.setState({
-          searchResult: true
-      })}
-    } else {
-      this.clearQuery()
+      // if there is no query, set default state
+      this.noQuery()
     }
   }
 
-  clearQuery = () => {
+  noQuery = () => {
     this.setState({
       query: '',
+      noSearchResult: '',
       listOfPlaces: this.props.defaultListOfPlaces
     })
     this.props.setVisiblePlaces(this.props.defaultListOfPlaces)
@@ -81,10 +85,10 @@ class Sidebar extends Component {
           <hr />
           </div>
         ))}
-        {this.state.searchResult === true &&
+        {this.state.listOfPlaces.length === 0 &&
           <div
             className="noSearchResult">
-            <p>No search result</p>
+            <p>{this.state.noSearchResult}</p>
           </div>
         }
       </div>

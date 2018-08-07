@@ -51,6 +51,10 @@ class MapContainer extends Component {
     this.setDefaultVisiblePlaces()
   }
 
+  // componentWillUpdate(){
+  //   this.setVisiblePlaces()
+  // }
+
   // set visible places after typing sth in search input
   setVisiblePlaces = (sidebarPlace) => {
     this.setState({
