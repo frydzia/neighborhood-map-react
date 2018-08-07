@@ -156,12 +156,19 @@ class MapContainer extends Component {
 
         }).catch(() => { // handle errors
           console.log('foursquareDetailError')
+          this.setState({
+            rating: 'Sorry, can not load rating',
+            phone: 'Sorry, can not load number',
+            desciption: '',
+            address:'Sorry, can not load address',
+            photo: ''
+          })
         })
       }
 
     }).catch(() => { // handle errors
       console.log('foursquareError')
-      alert('Sorry, we could not load the content')
+      alert('Sorry, we could not load infowindow content')
     })
   }
 
