@@ -22,7 +22,6 @@ class MapContainer extends Component {
     bounds: {},
     showInfoWindow: false,
     activeMarker: {},
-//    clickedPlace: {},
     address: '',
     description: '',
     rating: '',
@@ -73,7 +72,6 @@ class MapContainer extends Component {
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
     this.setState({
-//      clickedPlace: placeProps,
       activeMarker: marker,
       showInfoWindow: true
     })
@@ -88,7 +86,6 @@ class MapContainer extends Component {
       showInfoWindow: false,
       visiblePlaces: this.state.places,
       activeMarker: {},
-//      clickedPlace: {}
     })
   }
 
@@ -99,7 +96,6 @@ class MapContainer extends Component {
 //    console.log(currentMarker)
     this.setState({
       activeMarker: currentMarker,
-//      clickedPlace: selectedPlace,
       showInfoWindow: true
     })
   }
@@ -116,7 +112,6 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-//        console.log(this.state.clickedPlace)
         console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
