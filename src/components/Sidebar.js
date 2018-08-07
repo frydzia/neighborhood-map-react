@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 class Sidebar extends Component {
   state = {
     listOfPlaces: [],
-    selectedPlace: {},
-//    sidebarPlace: {}
+//    selectedPlace: {}
   }
 
   setListOfPlaces = () => {
@@ -20,26 +19,15 @@ class Sidebar extends Component {
   }
 
   openInfowindowAfterClickingSidebar = (place) => {
-      this.props.setVisiblePlaces(place)
-
-     this.props.setActiveMarkerForSelectedPlace(place)
-     this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
+//      this.setState({ selectedPlace: place})
+    this.props.setVisiblePlaces(place)
+    this.props.setActiveMarkerForSelectedPlace(place)
+    this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
   }
 
 
-
-//props.openInfowindow(place.location.lat, place.location.lng, place.title)
-  // onPlaceFromListClick = (placeProps) => {
-  //   this.setState({
-  //     clickedPlace: placeProps
-  //   })
-  //   alert(placeProps.title)
-  // }
-
-
 // this.searchMarker()
-  // this.props.setActiveMarkerForSelectedPlace()
-  // this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
+
   render() {
     return (
       <div className="sidebarMenu">
@@ -53,11 +41,7 @@ class Sidebar extends Component {
             className="placeFromList"
             tabIndex={this.state.listOfPlaces+index}
   					key={index}
-            onClick={() => {
-              this.setState({ selectedPlace: place})
-              this.openInfowindowAfterClickingSidebar(place)
-              }
-            }
+            onClick={() => {this.openInfowindowAfterClickingSidebar(place)}}
           >
           <p>{place.title}</p>
           <hr />
@@ -69,7 +53,10 @@ class Sidebar extends Component {
 }
 
 Sidebar.propTypes = {
-   defaultListOfPlaces: PropTypes.array.isRequired
+   defaultListOfPlaces: PropTypes.array.isRequired,
+   setVisiblePlaces: PropTypes.func.isRequired,
+   setActiveMarkerForSelectedPlace: PropTypes.func.isRequired,
+   openInfowindow: PropTypes.func.isRequired
 //   clickedPlace: PropTypes.array.isRequired,
 //   getVenue: PropTypes.func.isRequired
 }

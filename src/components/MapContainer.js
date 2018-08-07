@@ -61,7 +61,7 @@ class MapContainer extends Component {
 //    console.log(this.state.visiblePlaces)
   }
 
-  // save marker into markerObjects array
+  // save marker into markerObjects map object
   registerMarker = (element) => {
     console.log(element);
     if (element != null){
@@ -79,28 +79,30 @@ class MapContainer extends Component {
       showInfoWindow: true
     })
 
-    // open infowindow when marker is clicked with information about clicked place
+    // open infowindow when marker is clicked
     this.openInfowindow(placeProps.position.lat, placeProps.position.lng, placeProps.title)
   }
 
   // close infowindow
   closeInfowindow = () => {
-      this.setState({
-        showInfoWindow: false,
-        visiblePlaces: this.state.places,
-        activeMarker: {},
-        clickedPlace: {}
-      })
+    this.setState({
+      showInfoWindow: false,
+      visiblePlaces: this.state.places,
+      activeMarker: {},
+      clickedPlace: {}
+    })
   }
 
   setActiveMarkerForSelectedPlace = (selectedPlace) => {
-    if (this.props.selectedPlace !== '') {
-      this.setState({
-        activeMarker: selectedPlace.marker,
-        clickedPlace: selectedPlace,
-        showInfoWindow: true
-      })
-    }
+    // get current marker from markerObjects based on the name of the place that was clicked on the sidebar
+    let currentMarker = this.state.markerObjects.get(selectedPlace.title)
+
+//    console.log(currentMarker)
+    this.setState({
+      activeMarker: currentMarker,
+      clickedPlace: selectedPlace,
+      showInfoWindow: true
+    })
   }
 
   openInfowindow = (lat, lng, name) => {
@@ -193,7 +195,6 @@ class MapContainer extends Component {
             {this.state.visiblePlaces.map((place, index) =>
               <Marker
                 ref={this.registerMarker} // assign ref attribute to store reference to marker
-                options={{id: index}}
                 position = {place.location}
                 key = {index}
                 title = {place.title}
