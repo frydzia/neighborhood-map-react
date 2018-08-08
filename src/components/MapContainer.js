@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { InfoWindow, Map as MyMap, Marker, GoogleApiWrapper } from 'google-maps-react';
-// import PropTypes from 'prop-types';
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
 import Sidebar from './Sidebar.js';
@@ -52,20 +51,16 @@ class MapContainer extends Component {
 
   // set visible places after typing sth in search input
   setVisiblePlaces = (sidebarPlace) => {
-    console.log(sidebarPlace)
     this.setState({
       visiblePlaces: sidebarPlace
     })
-    console.log(this.state.visiblePlaces)
   }
 
   // save marker into markerObjects map object
   registerMarker = (element) => {
-    console.log(element);
     if (element != null) {
     this.state.markerObjects.set(element.marker.title, element.marker)
     }
-      console.log(this.state.markerObjects)
   }
 
   // set parameters/state for the clicked marker
@@ -126,7 +121,6 @@ class MapContainer extends Component {
 
         // get detailsed data about the place from foursquare API
         FoursquareAPI.getDetailInfo(venueID).then((response) => {
-//        console.log(this.state.activeMarker)
           // set the rating if available
           if(response.rating) {
             this.setState({rating: response.rating});
@@ -175,6 +169,8 @@ class MapContainer extends Component {
   }
 
   render() {
+    const { activeMarker } = this.state
+
     return (
       <div className="map-container">
         <Sidebar
@@ -207,24 +203,24 @@ class MapContainer extends Component {
                 key={index}
                 title={place.title}
                 onClick={this.onMarkerClick}
-                icon={this.state.activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
+                icon={activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
               />
             )}
             <InfoWindow
-              marker={this.state.activeMarker}
+              marker={activeMarker}
               visible={this.state.showInfoWindow}
               onClose={this.closeInfowindow}
             >
                 <div
                   className="info-window"
-                  aria-label={`InfoWindow on ${this.state.activeMarker.title}`}
+                  aria-label={`InfoWindow on ${activeMarker.title}`}
                   tabIndex="0"
                 >
-                  <h2>{this.state.activeMarker.title}</h2>
+                  <h2>{activeMarker.title}</h2>
                   <img
                     className="place-photo"
                     src={this.state.photo}
-                    alt={this.state.activeMarker.title + ' photo'}
+                    alt={activeMarker.title + ' photo'}
                   />
                   <div className="data">
                     <p>Address: {this.state.address}</p>
@@ -246,11 +242,6 @@ class MapContainer extends Component {
   }
 }
 
-// MapContainer.propTypes = {
-//   activeMarkers: PropTypes.array.isRequired,
-//   clickedPlace: PropTypes.array.isRequired,
-//   getVenue: PropTypes.func.isRequired
-// }
 
 export default GoogleApiWrapper({
   apiKey: ('AIzaSyAHzXNyo0NQsCWdHYLGpzBwwYayU2beOMs')

@@ -10,6 +10,7 @@ class Sidebar extends Component {
     query: ''
   }
 
+  // set default list of places
   setListOfPlaces = () => {
     this.setState({
       listOfPlaces: this.props.defaultListOfPlaces,
@@ -20,20 +21,19 @@ class Sidebar extends Component {
     this.setListOfPlaces()
   }
 
+  // when place from sidebar is clicked, open infowindow on matching marker
   openInfowindowAfterClickingSidebar = (place) => {
-
-    // this.setState({ selectedPlace: place})
-    // console.log(this.state.selectedPlace)
-//    this.props.setVisiblePlaces(place)
     this.props.setActiveMarkerForSelectedPlace(place)
     this.props.openInfowindow(place.location.lat, place.location.lng, place.title)
   }
 
+  // invoke this when typing in search bar
   updateQuery = (query) => {
     this.setState({
       query: query
     })
-    this.props.closeInfowindow() // close opened infowindow when start typing
+    // close opened infowindow when start typing
+    this.props.closeInfowindow()
 
     if (query.trim()) {
       // search for places that match query
@@ -42,7 +42,7 @@ class Sidebar extends Component {
         listOfPlaces: this.state.listOfPlaces.filter(place => match.test(place.title)) // this filtering allows to display a list of places matching the query (Sidebar component's render() functuion uses listOfPlaces state to display list of places)
       })
       this.props.setVisiblePlaces(this.state.listOfPlaces.filter(place => match.test(place.title))) // this filtering allows to display markers matching the query (this data is passed to MapContainer component)
-      
+
       // if there are no matching results, show info "No search results"
       if (this.state.listOfPlaces.length === 0) {
         this.setState({
@@ -53,8 +53,6 @@ class Sidebar extends Component {
       // if there is no query, set default state
       this.noQuery()
     }
-
-
   }
 
   // if there is no query, set default state
@@ -68,6 +66,8 @@ class Sidebar extends Component {
   }
 
   render() {
+    const { listOfPlaces, query, noSearchResult } = this.state
+
     return (
       <div className="sidebar-menu">
         <h3>Choose your favourite bookstore</h3>
@@ -75,14 +75,14 @@ class Sidebar extends Component {
           type="text"
           placeholder="Search!"
           onChange={event => this.updateQuery(event.target.value)}
-					value={this.state.query}
+					value={query}
           aria-label="Search bar"
           tabIndex="0"
           className="search-bar"
         />
         <hr />
 
-        {this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
+        {listOfPlaces.length > 0 && listOfPlaces.map((place, index) => (
           <div
             className="place-from-list"
             aria-label="List of locations"
@@ -101,11 +101,11 @@ class Sidebar extends Component {
           <hr />
           </div>
         ))}
-        {this.state.listOfPlaces.length === 0 &&
+        {listOfPlaces.length === 0 &&
           <div
             className="no-search-result"
           >
-            <p>{this.state.noSearchResult}</p>
+            <p>{noSearchResult}</p>
           </div>
         }
       </div>
