@@ -102,9 +102,7 @@ class Sidebar extends Component {
           </div>
         ))}
         {listOfPlaces.length === 0 &&
-          <div
-            className="no-search-result"
-          >
+          <div className="no-search-result">
             <p>{noSearchResult}</p>
           </div>
         }

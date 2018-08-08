@@ -54,6 +54,26 @@ h1 {
   text-align: left;
 }
 
+/* .toggle-photo {
+
+} */
+
+.true-data {
+  display: block;
+}
+
+.true-place-photo {
+  display: block;
+}
+
+.false-data {
+  display: none;
+}
+
+.false-place-photo {
+  display: none;
+}
+
 .logo {
   height: 10px;
   float: right;

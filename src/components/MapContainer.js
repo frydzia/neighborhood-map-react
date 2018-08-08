@@ -3,6 +3,7 @@ import { InfoWindow, Map as MyMap, Marker, GoogleApiWrapper } from 'google-maps-
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
 import Sidebar from './Sidebar.js';
+// import ToggleButton from './ToggleButton.js'
 
 
 class MapContainer extends Component {
@@ -25,7 +26,10 @@ class MapContainer extends Component {
     description: '',
     rating: '',
     phone: '',
-    photo: ''
+    photo: '',
+    toggle: 'photo',
+    showPhoto: true,
+    showData: true
   }
 
   // set the map boundaries according to the location of the places
@@ -129,7 +133,7 @@ class MapContainer extends Component {
           }
           // set the photo if available
           if(response.bestPhoto) {
-            this.setState({photo: response.bestPhoto.prefix+'width150'+response.bestPhoto.suffix});
+            this.setState({photo: response.bestPhoto.prefix+'width160'+response.bestPhoto.suffix});
           } else {
             this.setState({photo: ''});
           }
@@ -168,6 +172,25 @@ class MapContainer extends Component {
     })
   }
 
+  // function for show and hide contenr for infowindow in mobile viewport
+  // TODO: fix onClick on button
+  onButtonClick = () => {
+    console.log("toggle")
+    if (this.state.toggle === 'photo') {
+      this.setState({
+        toggle: 'data',
+        showPhoto: true,
+        showData: false
+      })
+    } else {
+      this.setState({
+        toggle: 'photo',
+        showPhoto: false,
+        showData: true
+      })
+    }
+  }
+
   render() {
     const { activeMarker } = this.state
 
@@ -180,7 +203,7 @@ class MapContainer extends Component {
           setActiveMarkerForSelectedPlace={this.setActiveMarkerForSelectedPlace}
           setVisiblePlaces={this.setVisiblePlaces}
         />
-        <div role="application" id="map" >
+        <div role="application" id="map">
           <MyMap
             google={this.props.google}
             style={{
@@ -217,12 +240,18 @@ class MapContainer extends Component {
                   tabIndex="0"
                 >
                   <h2>{activeMarker.title}</h2>
+                  <button
+
+                    onClick={this.onButtonClick}
+                  >
+                    Show {this.state.toggle}
+                  </button>
                   <img
-                    className="place-photo"
+                    className={this.state.showPhoto + "-place-photo"}
                     src={this.state.photo}
                     alt={activeMarker.title + ' photo'}
                   />
-                  <div className="data">
+                  <div className={this.state.showData + "-data"}>
                     <p>Address: {this.state.address}</p>
                     <p>Contact: {this.state.phone}</p>
                     <p>{this.state.description}</p>
