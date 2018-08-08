@@ -193,6 +193,7 @@ class MapContainer extends Component {
               lat: 50.06465,
               lng: 19.94498
             }}
+            gestureHandling={'greedy'} 
             bounds={this.state.bounds}
             ref={'map'}
             onClick={this.closeInfowindow}
