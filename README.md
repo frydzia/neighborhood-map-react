@@ -1,4 +1,4 @@
-#Neighborhood Map - Places for Booklovers in Krakow
+# Neighborhood Map - Places for Booklovers in Krakow
 
 It's a single page application featuring a map of Krakow with several markers on bookstores locations. Application allows you to filter places and displays information about places after clicking on their name or marker.
 Project was build using [React](https://reactjs.org/) and third-party libraries and APIs.
@@ -17,7 +17,7 @@ Project was build using [React](https://reactjs.org/) and third-party libraries 
 Eg. for testing Service Worker run `npm run build`.
 
 
-##Dependencies
+## Dependencies
 
 Project was created using:
 * [Create React App](https://github.com/facebookincubator/create-react-app)
