@@ -14,7 +14,7 @@ Project was build using [React](https://reactjs.org/) and third-party libraries 
 
 ## App in Production Version
 
-Eg. for testing Service Worker run `npm run build`.
+Eg. for testing Service Worker run `npm run build`, then `npm install -g service` and `serve -s build`. App should be available at http://localhost:5000/.
 
 
 ## Dependencies
