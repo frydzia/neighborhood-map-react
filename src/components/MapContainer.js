@@ -3,7 +3,6 @@ import { InfoWindow, Map as MyMap, Marker, GoogleApiWrapper } from 'google-maps-
 import * as FoursquareAPI from './FoursquareAPI.js';
 import logo from '../powered-by-foursquare-grey.png';
 import Sidebar from './Sidebar.js';
-// import ToggleButton from './ToggleButton.js'
 
 
 class MapContainer extends Component {
@@ -26,10 +25,7 @@ class MapContainer extends Component {
     description: '',
     rating: '',
     phone: '',
-    photo: '',
-    toggle: 'photo',
-    showPhoto: true,
-    showData: true
+    photo: ''
   }
 
   // set the map boundaries according to the location of the places
@@ -172,24 +168,6 @@ class MapContainer extends Component {
     })
   }
 
-  // function for show and hide contenr for infowindow in mobile viewport
-  // TODO: fix onClick on button
-  onButtonClick = () => {
-    console.log("toggle")
-    if (this.state.toggle === 'photo') {
-      this.setState({
-        toggle: 'data',
-        showPhoto: true,
-        showData: false
-      })
-    } else {
-      this.setState({
-        toggle: 'photo',
-        showPhoto: false,
-        showData: true
-      })
-    }
-  }
 
   render() {
     const { activeMarker } = this.state
@@ -240,18 +218,12 @@ class MapContainer extends Component {
                   tabIndex="0"
                 >
                   <h2>{activeMarker.title}</h2>
-                  <button
-
-                    onClick={this.onButtonClick}
-                  >
-                    Show {this.state.toggle}
-                  </button>
                   <img
-                    className={this.state.showPhoto + "-place-photo"}
+                    className="place-photo"
                     src={this.state.photo}
                     alt={activeMarker.title + ' photo'}
                   />
-                  <div className={this.state.showData + "-data"}>
+                  <div className="data">
                     <p>Address: {this.state.address}</p>
                     <p>Contact: {this.state.phone}</p>
                     <p>{this.state.description}</p>

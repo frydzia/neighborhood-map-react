@@ -54,26 +54,6 @@ h1 {
   text-align: left;
 }
 
-/* .toggle-photo {
-
-} */
-
-.true-data {
-  display: block;
-}
-
-.true-place-photo {
-  display: block;
-}
-
-.false-data {
-  display: none;
-}
-
-.false-place-photo {
-  display: none;
-}
-
 .logo {
   height: 10px;
   float: right;
@@ -101,19 +81,4 @@ h1 {
     order: 0;
     margin: 0;
   }
-
-  /* .info-window {
-    display: inline;
-  } */
-
-/*
-  .place-photo {
-    position: absolute;
-    left: 0px;
-  }
-
-  .data {
-    position: relative;
-    left: 100px;
-  } */
 }
