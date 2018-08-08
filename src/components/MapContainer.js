@@ -174,7 +174,7 @@ class MapContainer extends Component {
   // return content
   render() {
     return (
-      <div className="mapContainer">
+      <div className="map-container">
         <Sidebar
           defaultListOfPlaces={this.state.places}
           openInfowindow={this.openInfowindow}
@@ -204,7 +204,6 @@ class MapContainer extends Component {
                 position = {place.location}
                 key = {index}
                 title = {place.title}
-                tabIndex="0"
                 onClick = { this.onMarkerClick }
                 icon = {this.state.activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
               />
@@ -219,11 +218,13 @@ class MapContainer extends Component {
                   aria-label={`InfoWindow on ${this.state.activeMarker.title}`}
                 >
                   <h2 tabIndex="0">{this.state.activeMarker.title}</h2>
-                  <img tabIndex="0" src={this.state.photo} alt={this.state.activeMarker.title + ' photo'}/>
-                  <p tabIndex="0">Address: {this.state.address}</p>
-                  <p tabIndex="0">Contact: {this.state.phone}</p>
-                  <p tabIndex="0">{this.state.description}</p>
-                  <p tabIndex="0">Rating: {this.state.rating}</p>
+                  <img className="place-photo" src={this.state.photo} alt={this.state.activeMarker.title + ' photo'}/>
+                  <div className="data">
+                    <p>Address: {this.state.address}</p>
+                    <p >Contact: {this.state.phone}</p>
+                    <p >{this.state.description}</p>
+                    <p >Rating: {this.state.rating}</p>
+                  </div>
                   <img className="logo" src={logo} alt="Foursquare logo"/>
                 </div>
             </InfoWindow>

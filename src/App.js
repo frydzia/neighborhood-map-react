@@ -7,8 +7,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="heading">
-          <h1 tabIndex="0">Places for booklovers in Krakow</h1>
+        <div className="header">
+          <h1>Places for booklovers in Krakow</h1>
         </div>
         <MapContainer/>
       </div>

@@ -65,7 +65,7 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div className="sidebarMenu">
+      <div className="sidebar-menu">
         <h3>Choose your favourite bookstore</h3>
         <input
           id="search"
@@ -75,13 +75,13 @@ class Sidebar extends Component {
 					value={this.state.query}
           aria-label="Search bar"
           tabIndex="0"
-          className="searchBar"
+          className="search-bar"
         />
         <hr />
 
         { this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
           <div
-            className="placeFromList"
+            className="place-from-list"
             aria-label="Lst of locations"
             role="list"
   					key={index}
@@ -94,7 +94,7 @@ class Sidebar extends Component {
         ))}
         {this.state.listOfPlaces.length === 0 &&
           <div
-            className="noSearchResult">
+            className="no-search-result">
             <p>{this.state.noSearchResult}</p>
           </div>
         }
