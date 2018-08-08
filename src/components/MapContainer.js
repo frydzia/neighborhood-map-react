@@ -75,6 +75,14 @@ class MapContainer extends Component {
 
   // set parameters/state for the clicked marker
   onMarkerClick = (placeProps, marker, e) => {
+    // display "loading" while waiting for data from foursquare
+    this.setState({
+      address: 'Loading...',
+      description: 'Loading...',
+      rating: 'Loading...',
+      phone: 'Loading...',
+      photo: 'Loading...'
+    })
     this.setState({
       activeMarker: marker,
       showInfoWindow: true
@@ -94,6 +102,14 @@ class MapContainer extends Component {
   }
 
   setActiveMarkerForSelectedPlace = (selectedPlace) => {
+    // display "loading" while waiting for data from foursquare
+    this.setState({
+      address: 'Loading...',
+      description: 'Loading...',
+      rating: 'Loading...',
+      phone: 'Loading...',
+      photo: 'Loading...'
+    })
     // get current marker from markerObjects based on the name of the place that was clicked on the sidebar
     let currentMarker = this.state.markerObjects.get(selectedPlace.title)
 
@@ -139,10 +155,10 @@ class MapContainer extends Component {
           }
 
           // set the description if available
-          if(response.desciption) {
-            this.setState({desciption: response.desciption});
+          if(response.description) {
+            this.setState({description: response.description});
           } else {
-            this.setState({desciption: ''});
+            this.setState({description: ''});
           }
 
           // set the phone number if available
