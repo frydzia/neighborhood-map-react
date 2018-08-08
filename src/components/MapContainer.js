@@ -174,7 +174,6 @@ class MapContainer extends Component {
     })
   }
 
-  // return content
   render() {
     return (
       <div className="map-container">
@@ -235,7 +234,7 @@ class MapContainer extends Component {
                   </div>
                   <img
                     className="logo"
-                    src={logo} 
+                    src={logo}
                     alt="Foursquare logo"
                   />
                 </div>

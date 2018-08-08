@@ -39,9 +39,10 @@ class Sidebar extends Component {
       // search for places that match query
       const match = new RegExp(escapeRegExp(query), 'i')
       this.setState({
-        listOfPlaces: this.props.defaultListOfPlaces.filter(place => match.test(place.title))
+        listOfPlaces: this.state.listOfPlaces.filter(place => match.test(place.title)) // this filtering allows to display a list of places matching the query (Sidebar component's render() functuion uses listOfPlaces state to display list of places)
       })
-      console.log(this.state.listOfPlaces)
+      this.props.setVisiblePlaces(this.state.listOfPlaces.filter(place => match.test(place.title))) // this filtering allows to display markers matching the query (this data is passed to MapContainer component)
+      
       // if there are no matching results, show info "No search results"
       if (this.state.listOfPlaces.length === 0) {
         this.setState({
@@ -53,7 +54,7 @@ class Sidebar extends Component {
       this.noQuery()
     }
 
-    this.props.setVisiblePlaces(this.state.listOfPlaces)
+
   }
 
   // if there is no query, set default state
@@ -81,7 +82,7 @@ class Sidebar extends Component {
         />
         <hr />
 
-        { this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
+        {this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
           <div
             className="place-from-list"
             aria-label="List of locations"
