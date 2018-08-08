@@ -35,7 +35,6 @@ class MapContainer extends Component {
     for (let i = 0; i < this.state.places.length; i++) {
       bounds.extend(this.state.places[i].location)
     }
-
     this.setState({bounds})
   }
 
@@ -51,12 +50,9 @@ class MapContainer extends Component {
     this.setDefaultVisiblePlaces()
   }
 
-  // componentWillUpdate(){
-  //   this.setVisiblePlaces()
-  // }
-
   // set visible places after typing sth in search input
   setVisiblePlaces = (sidebarPlace) => {
+    console.log(sidebarPlace)
     this.setState({
       visiblePlaces: sidebarPlace
     })
@@ -66,11 +62,10 @@ class MapContainer extends Component {
   // save marker into markerObjects map object
   registerMarker = (element) => {
     console.log(element);
-    if (element != null){
+    if (element != null) {
     this.state.markerObjects.set(element.marker.title, element.marker)
     }
       console.log(this.state.markerObjects)
-
   }
 
   // set parameters/state for the clicked marker
@@ -83,11 +78,11 @@ class MapContainer extends Component {
       phone: 'Loading...',
       photo: 'Loading...'
     })
+    // set state for clicked marker
     this.setState({
       activeMarker: marker,
       showInfoWindow: true
     })
-
     // open infowindow when marker is clicked
     this.openInfowindow(placeProps.position.lat, placeProps.position.lng, placeProps.title)
   }
@@ -113,7 +108,6 @@ class MapContainer extends Component {
     // get current marker from markerObjects based on the name of the place that was clicked on the sidebar
     let currentMarker = this.state.markerObjects.get(selectedPlace.title)
 
-//    console.log(currentMarker)
     this.setState({
       activeMarker: currentMarker,
       showInfoWindow: true
@@ -139,53 +133,46 @@ class MapContainer extends Component {
           } else {
             this.setState({rating: 'no rating'});
           }
-
           // set the photo if available
           if(response.bestPhoto) {
             this.setState({photo: response.bestPhoto.prefix+'width150'+response.bestPhoto.suffix});
           } else {
             this.setState({photo: ''});
           }
-
           // set the address if available
           if(response.location.address) {
             this.setState({address: response.location.address});
           } else {
             this.setState({address:'no address'});
           }
-
           // set the description if available
           if(response.description) {
             this.setState({description: response.description});
           } else {
             this.setState({description: ''});
           }
-
           // set the phone number if available
           if(response.contact.formattedPhone) {
             this.setState({phone: response.contact.formattedPhone});
           } else {
             this.setState({phone: 'no phone number'});
           }
-
         }).catch(() => { // handle errors
           console.log('foursquareDetailError')
           this.setState({
-            rating: 'Sorry, can not load rating',
-            phone: 'Sorry, can not load number',
+            rating: "Sorry, can't load rating",
+            phone: "Sorry, can't load rating",
             desciption: '',
-            address:'Sorry, can not load address',
+            address: "Sorry, can't load rating",
             photo: ''
           })
         })
       }
-
     }).catch(() => { // handle errors
       console.log('foursquareError')
-      alert('Sorry, we could not load infowindow content')
+      alert("Sorry, can't load infowindow content")
     })
   }
-
 
   // return content
   render() {
@@ -217,11 +204,11 @@ class MapContainer extends Component {
             {this.state.visiblePlaces.map((place, index) =>
               <Marker
                 ref={this.registerMarker} // assign ref attribute to store reference to marker
-                position = {place.location}
-                key = {index}
-                title = {place.title}
-                onClick = { this.onMarkerClick }
-                icon = {this.state.activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
+                position={place.location}
+                key={index}
+                title={place.title}
+                onClick={this.onMarkerClick}
+                icon={this.state.activeMarker.title === place.title ? {url: 'http://maps.gstatic.com/mapfiles/markers2/icon_green.png'} : {url: 'http://maps.gstatic.com/mapfiles/markers2/marker.png'}}
               />
             )}
             <InfoWindow
@@ -232,16 +219,25 @@ class MapContainer extends Component {
                 <div
                   className="info-window"
                   aria-label={`InfoWindow on ${this.state.activeMarker.title}`}
+                  tabIndex="0"
                 >
-                  <h2 tabIndex="0">{this.state.activeMarker.title}</h2>
-                  <img className="place-photo" src={this.state.photo} alt={this.state.activeMarker.title + ' photo'}/>
+                  <h2>{this.state.activeMarker.title}</h2>
+                  <img
+                    className="place-photo"
+                    src={this.state.photo}
+                    alt={this.state.activeMarker.title + ' photo'}
+                  />
                   <div className="data">
                     <p>Address: {this.state.address}</p>
-                    <p >Contact: {this.state.phone}</p>
-                    <p >{this.state.description}</p>
-                    <p >Rating: {this.state.rating}</p>
+                    <p>Contact: {this.state.phone}</p>
+                    <p>{this.state.description}</p>
+                    <p>Rating: {this.state.rating}</p>
                   </div>
-                  <img className="logo" src={logo} alt="Foursquare logo"/>
+                  <img
+                    className="logo"
+                    src={logo} 
+                    alt="Foursquare logo"
+                  />
                 </div>
             </InfoWindow>
           </MyMap>

@@ -7,8 +7,7 @@ class Sidebar extends Component {
   state = {
     listOfPlaces: [],
     noSearchResult: '',
-    query: '',
-    selectedPlace: []
+    query: ''
   }
 
   setListOfPlaces = () => {
@@ -31,9 +30,10 @@ class Sidebar extends Component {
   }
 
   updateQuery = (query) => {
-    this.props.setVisiblePlaces(this.state.listOfPlaces)
-    this.setState({ query: query })
-    this.props.closeInfowindow()
+    this.setState({
+      query: query
+    })
+    this.props.closeInfowindow() // close opened infowindow when start typing
 
     if (query.trim()) {
       // search for places that match query
@@ -41,6 +41,7 @@ class Sidebar extends Component {
       this.setState({
         listOfPlaces: this.props.defaultListOfPlaces.filter(place => match.test(place.title))
       })
+      console.log(this.state.listOfPlaces)
       // if there are no matching results, show info "No search results"
       if (this.state.listOfPlaces.length === 0) {
         this.setState({
@@ -51,8 +52,11 @@ class Sidebar extends Component {
       // if there is no query, set default state
       this.noQuery()
     }
+
+    this.props.setVisiblePlaces(this.state.listOfPlaces)
   }
 
+  // if there is no query, set default state
   noQuery = () => {
     this.setState({
       query: '',
@@ -62,13 +66,11 @@ class Sidebar extends Component {
     this.props.setVisiblePlaces(this.props.defaultListOfPlaces)
   }
 
-
   render() {
     return (
       <div className="sidebar-menu">
         <h3>Choose your favourite bookstore</h3>
         <input
-          id="search"
           type="text"
           placeholder="Search!"
           onChange={event => this.updateQuery(event.target.value)}
@@ -82,19 +84,26 @@ class Sidebar extends Component {
         { this.state.listOfPlaces.length > 0 && this.state.listOfPlaces.map((place, index) => (
           <div
             className="place-from-list"
-            aria-label="Lst of locations"
+            aria-label="List of locations"
             role="list"
   					key={index}
             onClick={() => {this.openInfowindowAfterClickingSidebar(place)}}
             onKeyPress={() => {this.openInfowindowAfterClickingSidebar(place)}}
           >
-          <p tabIndex={0} aria-label={`View details for ${place.title}`} role="listitem">{place.title}</p>
+          <p
+            tabIndex="0"
+            aria-label={`Open infowindow for ${place.title}`}
+            role="listitem"
+          >
+            {place.title}
+          </p>
           <hr />
           </div>
         ))}
         {this.state.listOfPlaces.length === 0 &&
           <div
-            className="no-search-result">
+            className="no-search-result"
+          >
             <p>{this.state.noSearchResult}</p>
           </div>
         }
