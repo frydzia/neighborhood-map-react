@@ -11,6 +11,8 @@ Project was build using [React](https://reactjs.org/) and third-party libraries 
 3. From the project directory run `npm install` to install all dependencies.
 4. Launch the app via local server with `npm start` - app should open in your browser at the address http://localhost:3000/.
 
+You can also see the application [here](https://krk-book-map.herokuapp.com/).
+
 
 ## App in Production Version
 
